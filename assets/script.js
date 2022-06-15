@@ -2,25 +2,49 @@
 
 $("#search").click(getData);
 
-let weatherResponse = {}
+let searchHist = JSON.parse(localStorage.getItem('wdashboardhistory')) || [];
 
-let searchHist
+function updateSearchHist() {
+
+    let searchList = '';
+
+    searchHist.forEach((search) => {
+        searchList += `<li><button type="button" onclick="histGetData('${search}')">${search}</button></li>`;
+    })
+
+    document.getElementById('search-history').innerHTML = searchList;
+
+    console.log(document.getElementById('search-history').innerHTML);
+
+}
+
+function histGetData(search) {
+    $('#city-search').val(search);
+    getData();
+    searchHist.shift()
+}
+
+updateSearchHist();
 
 
 function getData() {
 
     let city = $('#city-search').val();
 
-    console.log(city);
+    searchHist.unshift(city);
+
+    localStorage.setItem('wdashboardhistory', JSON.stringify(searchHist));
+
+    updateSearchHist();
 
     fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=5ff5cac73a1063fefa1a4b5e6eb8806c`).then(function (response) {
         return response.json();
     })
         .then(function (data) {
 
-            let lat = data[0].lat
+            let lat = data[0].lat;
 
-            let lon = data[0].lon
+            let lon = data[0].lon;
 
 
             fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=5ff5cac73a1063fefa1a4b5e6eb8806c`)
@@ -45,19 +69,19 @@ function getData() {
 
                     const today = new Date();
 
-                    let day1 = new Date()
+                    let day1 = new Date();
                     day1.setDate(today.getDate() + 1);
 
-                    let day2 = new Date()
+                    let day2 = new Date();
                     day2.setDate(today.getDate() + 2);
 
-                    let day3 = new Date()
+                    let day3 = new Date();
                     day3.setDate(today.getDate() + 3);
 
-                    let day4 = new Date()
+                    let day4 = new Date();
                     day4.setDate(today.getDate() + 4);
 
-                    let day5 = new Date()
+                    let day5 = new Date();
                     day5.setDate(today.getDate() + 5);
 
                     function createForecast(weather, date) {
@@ -65,11 +89,11 @@ function getData() {
                         function uviColor(uvi) {
 
                             if (uvi < 3) {
-                                return '#a1c2a1'
+                                return '#a1c2a1';
                             } else if (uvi < 7) {
-                                return '#c2c1a1'
+                                return '#c2c1a1';
                             } else {
-                                return '#e09ba4'
+                                return '#e09ba4';
                             }
                         }
 
@@ -86,7 +110,7 @@ function getData() {
                         <div style="background: ${uviColor(weather.uvi)}; width: 25%">
                         The UV index is ${weather.uvi}
                         </div>
-                        </div>`
+                        </div>`;
                     }
 
                     document.getElementById('info-container').innerHTML = `<div>
@@ -121,7 +145,7 @@ function getData() {
                     </div>
                     
 
-                    </div>`
+                    </div>`;
 
                 });
 
