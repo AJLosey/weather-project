@@ -35,7 +35,7 @@ function getData() {
 
     updateSearchHist();
 
-    fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=5ff5cac73a1063fefa1a4b5e6eb8806c`).then(function (response) {
+    fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=5ff5cac73a1063fefa1a4b5e6eb8806c`).then(function (response) {
         return response.json();
     })
         .then(function (data) {
