@@ -14,8 +14,6 @@ function updateSearchHist() {
 
     document.getElementById('search-history').innerHTML = searchList;
 
-    console.log(document.getElementById('search-history').innerHTML);
-
 }
 
 function histGetData(search) {
@@ -53,7 +51,6 @@ function getData() {
                     return response.json();
                 })
                 .then(function (data) {
-                    console.log(data);
 
                     let currentweather = data.current;
 
